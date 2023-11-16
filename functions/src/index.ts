@@ -8,50 +8,48 @@
  */
 
 import { onRequest } from "firebase-functions/v2/https";
-import * as AWS from "aws-sdk";
+import { InstancesClient } from "@google-cloud/compute";
 
-AWS.config.update({ region: "us-west-2" });
+export const startminecraftserver = onRequest(
+  { cors: true },
+  async (req, res) => {
+    if (req.header("authorization") !== process.env.AUTHENTICATION_TOKEN)
+      res.status(401).send("Error: Unauthorized.");
 
-// create an ec2 object
-const ec2 = new AWS.EC2();
+    const instancesClient = new InstancesClient();
+    try {
+      await instancesClient.start({
+        instance: "minecraft-server",
+        project: "morgan-s-tools",
+        zone: "us-west1-a",
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+    }
 
-// setup instance params
-export const stopminecraftserver = onRequest({ cors: true }, (req, res) => {
-  if (req.header("authorization") !== process.env.AUTHENTICATION_TOKEN)
-    res.status(401).send("Error: Unauthorized.");
+    res.send("Start Successful");
+  },
+);
 
-  ec2.stopInstances(
-    {
-      InstanceIds: ["i-0ffb2af61a7236581"],
-    },
-    function (err, data) {
-      if (err) {
-        console.log(err, err.stack); // an error occurred
-      } else {
-        console.log(data); // successful response
-      }
-    },
-  );
+export const stopminecraftserver = onRequest(
+  { cors: true },
+  async (req, res) => {
+    if (req.header("authorization") !== process.env.AUTHENTICATION_TOKEN)
+      res.status(401).send("Error: Unauthorized.");
 
-  res.send("Stop Successful");
-});
+    const instancesClient = new InstancesClient();
+    try {
+      await instancesClient.stop({
+        instance: "minecraft-server",
+        project: "morgan-s-tools",
+        zone: "us-west1-a",
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+    }
 
-export const startminecraftserver = onRequest({ cors: true }, (req, res) => {
-  if (req.header("authorization") !== process.env.AUTHENTICATION_TOKEN)
-    res.status(401).send("Error: Unauthorized.");
-
-  ec2.startInstances(
-    {
-      InstanceIds: ["i-0ffb2af61a7236581"],
-    },
-    function (err, data) {
-      if (err) {
-        console.log(err, err.stack); // an error occurred
-      } else {
-        console.log(data); // successful response
-      }
-    },
-  );
-
-  res.send("Start Successful");
-});
+    res.send("Stop Successful");
+  },
+);
