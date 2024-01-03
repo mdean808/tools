@@ -2,7 +2,7 @@
 	import Loader from '~icons/ph/circle-notch';
 	import { Collection } from 'sveltefire';
 
-	let serverSelected: string;
+	let serverSelected = 'better-minecraft';
 	let code = '';
 	let status: undefined | 'success' | 'error' | 'loading';
 	let res: Response;
@@ -47,7 +47,9 @@
 		<p>start code</p>
 		<div class="flex gap-2">
 			<input class="input" type="text" bind:value={code} placeholder="super-secret-code" />
-			<button on:click={startServer} class="btn variant-filled-primary"> start </button>
+			<button on:click={startServer} class="btn variant-filled-primary">
+				start {serverSelected}
+			</button>
 			{#if status === 'loading'}
 				<Loader class="text-white h-8 w-8 self-center animate-spin" />
 			{:else}
