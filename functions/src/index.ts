@@ -29,7 +29,7 @@ export const getactiverminecraftserver = onRequest(
       .get();
     const ref = query.docs[0].ref;
 
-    res.json((await ref.get()).data());
+    res.json({ ...(await ref.get()).data(), id: ref.id });
   },
 );
 

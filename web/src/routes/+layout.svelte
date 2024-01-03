@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
 	import '../app.postcss';
+	import { FirebaseApp } from 'sveltefire';
 	import { initializeApp } from 'firebase/app';
-	import { getAnalytics } from 'firebase/analytics';
-	import { onMount } from 'svelte';
+	import type { Analytics } from 'firebase/analytics';
+	import { getFirestore } from 'firebase/firestore';
+	import { getAuth } from 'firebase/auth';
+	import { getDatabase } from 'firebase/database';
+	import { getStorage } from 'firebase/storage';
 
 	// Your web app's Firebase configuration
 	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -17,10 +21,12 @@
 	};
 
 	// Initialize Firebase
-	onMount(() => {
-		const app = initializeApp(firebaseConfig);
-		const analytics = getAnalytics(app);
-	});
+	const app = initializeApp(firebaseConfig);
+	const analytics = {} as Analytics;
+	const firestore = getFirestore(app);
+	const auth = getAuth(app);
+	const rtdb = getDatabase(app);
+	const storage = getStorage(app);
 </script>
 
 <svelte:head>
@@ -29,6 +35,8 @@
 	<title>mc.mogdan.xyz</title>
 </svelte:head>
 
-<body class="container mx-auto py-5 bg-surface-50 dark:bg-surface-900 light">
-	<slot />
-</body>
+<FirebaseApp {storage} {rtdb} {analytics} {firestore} {auth}>
+	<body class="container mx-auto py-5 bg-surface-50 dark:bg-surface-900 light">
+		<slot />
+	</body>
+</FirebaseApp>

@@ -1,12 +1,6 @@
 <script lang="ts">
 	import Loader from '~icons/ph/circle-notch';
-	let serverOptions = [
-		`vault-hunters@1.18.2`,
-		`better-minecraft@1.20.1`
-		// `modded@1.20.1`,
-		// `vanilla@latest`,
-		// `vanilla@1.16`
-	];
+	import { Collection } from 'sveltefire';
 
 	let serverSelected: string;
 	let code = '';
@@ -17,7 +11,7 @@
 		res = await fetch('https://startminecraftserver-ykuqto64rq-uc.a.run.app', {
 			method: 'post',
 			body: JSON.stringify({
-				server_name: serverSelected.split('@')[0]
+				server_name: serverSelected
 			}),
 			headers: {
 				authorization: code
@@ -39,11 +33,14 @@
 	<div>
 		<p>select server</p>
 		<select id="server-select" class="select" bind:value={serverSelected}>
-			{#each serverOptions as question}
-				<option selected={question === 'better-minecraft@1.20.1'} value={question}>
-					{question}
-				</option>
-			{/each}
+			<Collection ref={'minecraft'} let:data>
+				{#each data as server}
+					<option selected={server.id === 'better-minecraft'} value={server.id}>
+						{server.id + '@' + server.version}
+					</option>
+				{/each}
+				<option slot="loading">loading...</option>
+			</Collection>
 		</select>
 	</div>
 	<div>
