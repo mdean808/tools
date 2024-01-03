@@ -34,7 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^10.6.0",
-		"sveltefire": "https://github.com/mdean808/sveltefire-firebase-v10.git"
+		"firebase": "^9.23.0",
+		"sveltefire": "^0.4.4"
 	}
 }
