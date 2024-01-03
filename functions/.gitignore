@@ -11,3 +11,5 @@ typings/
 node_modules/
 
 src/aws-credentials.json
+
+firebase-auth.ts

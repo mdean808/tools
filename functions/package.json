@@ -12,7 +12,7 @@
   "engines": {
     "node": "18"
   },
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "dependencies": {
     "@google-cloud/compute": "^4.0.1",
     "firebase-admin": "^11.8.0",

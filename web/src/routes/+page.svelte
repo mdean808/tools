@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Loader from '~icons/ph/circle-notch';
 	let serverOptions = [
+		`vault-hunters@1.18.2`,
 		`better-minecraft@1.20.1`
 		// `modded@1.20.1`,
 		// `vanilla@latest`,
@@ -15,6 +16,9 @@
 		status = 'loading';
 		res = await fetch('https://startminecraftserver-ykuqto64rq-uc.a.run.app', {
 			method: 'post',
+			body: JSON.stringify({
+				server_name: serverSelected.split('@')[0]
+			}),
 			headers: {
 				authorization: code
 			}
