@@ -6,6 +6,7 @@
 	let code = '';
 	let status: undefined | 'success' | 'error' | 'loading';
 	let res: Response;
+
 	const startServer = async () => {
 		status = 'loading';
 		res = await fetch('https://startminecraftserver-ykuqto64rq-uc.a.run.app', {
